@@ -2,25 +2,21 @@ on:
   push:
     branches:
     - master
-name: Build and deploy .NET Core app to Linux WebApp
+name: Build and deploy .NET Core app to Windows WebApp
 
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@master
     
-    - uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS_GITHUB_SECRET_b85a }}
-
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.x
-    
+
     - name: Install dependencies
       run: dotnet restore dotnet/aspnetcore31/webAppOnLinux/Application/aspnet-core-dotnet-core
     
@@ -30,17 +26,9 @@ jobs:
     - name: Publish artifact
       run: dotnet publish dotnet/aspnetcore31/webAppOnLinux/Application/aspnet-core-dotnet-core --configuration Release --no-build --output dotnet/aspnetcore31/webAppOnLinux/Application/aspnet-core-dotnet-core/publish
     
-    - uses: azure/appservice-settings@v1
-      with:
-        app-name: anchauhLinuxWebApp
-        general-settings-json: '{"linuxFxVersion": "DOTNETCORE|3.1"}' #'General configuration settings as Key Value pairs'
-    
     - name: Deploy to Azure WebApp
       uses: azure/webapps-deploy@v1
       with:
-        app-name: anchauhLinuxWebApp
+        app-name: anchauhWindowWebApp
         package: dotnet/aspnetcore31/webAppOnLinux/Application/aspnet-core-dotnet-core/publish
-
-    - name: logout
-      run: |
-        az logout
+        publish-profile: ${{ secrets.AZURE_CREDENTIALS_GITHUB_SECRET_8fb6 }}
