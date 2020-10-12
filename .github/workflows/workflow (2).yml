@@ -18,17 +18,17 @@ jobs:
         dotnet-version: 3.1.x
 
     - name: Install dependencies
-      run: dotnet restore dotnet/aspnetcore31/webAppOnLinux/Application/aspnet-core-dotnet-core
+      run: dotnet restore dotnet/aspnetcore31/containerWithTests/Application/aspnet-core-dotnet-core
     
     - name: Build
-      run: dotnet build dotnet/aspnetcore31/webAppOnLinux/Application/aspnet-core-dotnet-core --configuration Release --no-restore
+      run: dotnet build dotnet/aspnetcore31/containerWithTests/Application/aspnet-core-dotnet-core --configuration Release --no-restore
     
     - name: Publish artifact
-      run: dotnet publish dotnet/aspnetcore31/webAppOnLinux/Application/aspnet-core-dotnet-core --configuration Release --no-build --output dotnet/aspnetcore31/webAppOnLinux/Application/aspnet-core-dotnet-core/publish
+      run: dotnet publish dotnet/aspnetcore31/containerWithTests/Application/aspnet-core-dotnet-core --configuration Release --no-build --output dotnet/aspnetcore31/containerWithTests/Application/aspnet-core-dotnet-core/publish
     
     - name: Deploy to Azure WebApp
       uses: azure/webapps-deploy@v1
       with:
         app-name: anchauhWindowWebApp
-        package: dotnet/aspnetcore31/webAppOnLinux/Application/aspnet-core-dotnet-core/publish
-        publish-profile: ${{ secrets.AZURE_CREDENTIALS_GITHUB_SECRET_848f }}
+        package: dotnet/aspnetcore31/containerWithTests/Application/aspnet-core-dotnet-core/publish
+        publish-profile: ${{ secrets.AZURE_CREDENTIALS_GITHUB_SECRET_82ab }}
